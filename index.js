@@ -18,7 +18,7 @@ server.on('message',function(msg,info){
     }
 
 })
-server.bind(2989);
+server.bind(8080);
 
 function setup(players = 2){
 
