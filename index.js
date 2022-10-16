@@ -1,8 +1,6 @@
 const express = require("express")
 var udp = require('dgram');
 var server = udp.createSocket('udp4');
-app = express();
-app.listen(8080)
 
 server.on('message',function(msg,info){
     msgs = msg.toString();
