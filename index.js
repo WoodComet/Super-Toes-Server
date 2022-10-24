@@ -3,22 +3,39 @@ var udp = require('dgram');
 var server = udp.createSocket('udp4');
 
 server.on('message',function(msg,info){
-    msgs = msg.toString();
+    msg = msg.toString();
 
-    console.log('Data received from client : ' + msgs);
+    console.log('Data received from client : ' + msg.toString());
     console.log('Received %d bytes from %s:%d\n',msg.length, info.address, info.port);
-    
 
-    //handeRequestTypes
-    cmd = msg.substring(4);
-    if(cmd.substring(0, 6) == 'Login:'){
-        
-        setup(cmd.substring(6));
+    //handel client commands
+
+    if(msg.substring(0, 4) == 'CMD:'){
+
+        cmd = msg.substring(4);
+        if(cmd.substring(0, 6) == 'Login:'){
+            
+            //createUser(info, cmd.substring(6));
+            return;
+        }
+
+        if(cmd.substring(0, 8) == "ExitRoom"){
+            //getUserByInfo(info).leaveRoom();
+            return;
+        }
+
+        if(cmd.substring(0, 9) == "JoinRoom:"){
+            console.log(cmd.substring(9))
+            //addUserToRoom(info, cmd.substring(9));
+            return;
+        }
+
         return;
     }
 
+
 })
-server.bind(8080);
+server.bind(2989);
 
 function setup(players = 2){
 
@@ -89,6 +106,9 @@ function registerMove(player = 0, coords = [0, 0]){
 }
 
 console.log(setup(6));
+<<<<<<< Updated upstream
 while(true){
 
 }
+=======
+>>>>>>> Stashed changes
