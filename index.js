@@ -1,4 +1,4 @@
-const express = require("express")
+const express = require("express");
 var udp = require('dgram');
 var server = udp.createSocket('udp4');
 
@@ -106,9 +106,3 @@ function registerMove(player = 0, coords = [0, 0]){
 }
 
 console.log(setup(6));
-<<<<<<< Updated upstream
-while(true){
-
-}
-=======
->>>>>>> Stashed changes
