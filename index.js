@@ -64,7 +64,7 @@ function createUser(info, Name = 'Username'){
         newUser.name = Name;
         newUser.address = info.address;
         newUser.port = info.port;
-        newUser.lastHBUTC = Date.now;
+        newUser.lastHBUTC = Date.now();
         activeUsers.push(newUser);
         console.log("New user created!");
         sendPacket('ACCNT:LogGood', info.port, info.address);
@@ -102,7 +102,7 @@ function RoomLoop(Room){
     sendPacketToAllInRoom("RoomTick", Room);
     for(i in room.users){
         player = room.users[i];
-        if(Math.floor((Date.now - player.lastHBUTC) / 1000) > 5);
+        if(Math.floor((Date.now() - player.lastHBUTC) / 1000) > 5);
         player.leaveRoom();
     }
     if(Room.users.length < 1) Room = undefined;
