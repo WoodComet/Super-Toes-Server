@@ -30,7 +30,8 @@ server.on('message',function(msg,info){
         }
         if(cmd.substring(0, 4) == "Host"){
             console.log(cmd.substring(4))
-            addUserToRoom(info, GenerateRoom())
+            GenerateRoom(info);
+            
             return;
         }
 
@@ -97,7 +98,7 @@ function addUserToLoby(User){
 function RoomLoop(Room){
     sendPacketToAllInRoom("RoomTick", Room);
 }
-function GenerateRoom(){
+function GenerateRoom(creator){
     NewRoom = new room;
     rName = "";
     while(rName.length < 6){
@@ -111,7 +112,8 @@ function GenerateRoom(){
     NewRoom.name = rName;
     roomlist.push(NewRoom);
     MainLoby.addRoomToLoby(NewRoom);
-    return rName;
+    addUserToRoom(creator, newroom)
+
 }
 function getUserByInfo(info){
     for(i in activeUsers){
