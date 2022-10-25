@@ -183,8 +183,8 @@ class room{
     }
 
     destroyRoom(myself){
-        this.roomIntervalLoop = undefined;
-        roomlist.pop(myself);
+        clearInterval(this.roomIntervalLoop);
+        roomlist.splice(roomlist.indexOf(myself), 1);
         myself = undefined;
     }
 
