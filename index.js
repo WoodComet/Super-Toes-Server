@@ -8,8 +8,10 @@ server.on('message',function(msg,info){
     console.log('Received %d bytes from %s:%d\n',msg.length, info.address, info.port);
 
     //handel client commands
-
-    if(msg.substring(0, 4) == 'CMD:'){
+    if(msg == "HB"){
+        getUserByInfo(info).lastHBUTC = Date.now();
+    }
+    else if(msg.substring(0, 4) == 'CMD:'){
 
         cmd = msg.substring(4);
         if(cmd.substring(0, 6) == 'Login:'){
@@ -97,6 +99,12 @@ function addUserToLoby(User){
 }
 function RoomLoop(Room){
     sendPacketToAllInRoom("RoomTick", Room);
+    for(i in room.users){
+        player = room.users[i];
+        if(Math.floor((Date.now - player.lastHBUTC) / 1000) > 5);
+        player.leaveRoom();
+    }
+    if(Room.users.length < 1) Room = undefined;
 }
 function GenerateRoom(creator){
     NewRoom = new room;
@@ -142,8 +150,9 @@ class user{
     address = '';
     port = '';
     room = null;
-
+    lastHBUTC = '';
     leaveRoom(){
+        console.log("User Leaving Room");
         this.room.users.pop(this);
         this.room = null;
     }
@@ -157,7 +166,6 @@ class room{
     MinimumMembers = 2;
 
     inprogress = false;
-
     initalizeRoom(){
         console.log("room name: " + this.name + " opened")
         setInterval(RoomLoop, 500, this);
