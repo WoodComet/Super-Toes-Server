@@ -172,7 +172,7 @@ class room{
     inprogress = false;
     initalizeRoom(){
         console.log("room name: " + this.name + " opened")
-        roomIntervalLoop = setInterval(RoomLoop, 500, this);
+        this.roomIntervalLoop = setInterval(RoomLoop, 500, this);
         //setTimeout(this.startgame, lifetime, this)
     }
 
@@ -183,7 +183,7 @@ class room{
     }
 
     destroyRoom(myself){
-        roomIntervalLoop = undefined;
+        this.roomIntervalLoop = undefined;
         roomlist.pop(myself);
         myself = undefined;
     }
