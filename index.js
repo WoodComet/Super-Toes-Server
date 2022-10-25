@@ -1,6 +1,6 @@
 var udp = require('dgram');
 var server = udp.createSocket('udp4');
-
+require("./tictacserver");
 server.on('message',function(msg,info){
     msg = msg.toString();
 
