@@ -112,7 +112,7 @@ function GenerateRoom(creator){
     NewRoom.name = rName;
     roomlist.push(NewRoom);
     MainLoby.addRoomToLoby(NewRoom);
-    addUserToRoom(creator, newroom)
+    addUserToRoom(creator, rName);
 
 }
 function getUserByInfo(info){
