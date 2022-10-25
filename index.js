@@ -106,7 +106,9 @@ function RoomLoop(Room){
 
     }
     console.log(Room.users);
-    if(Room.users.length < 1) Room = undefined;
+    
+    if(Room.users.length < 1) Room.destroyRoom(Room);
+    
 }
 function GenerateRoom(creator){
     NewRoom = new room;
@@ -166,11 +168,11 @@ class room{
     mode = '';
     users = [];
     MinimumMembers = 2;
-
+    roomIntervalLoop;
     inprogress = false;
     initalizeRoom(){
         console.log("room name: " + this.name + " opened")
-        setInterval(RoomLoop, 500, this);
+        roomIntervalLoop = setInterval(RoomLoop, 500, this);
         //setTimeout(this.startgame, lifetime, this)
     }
 
@@ -178,6 +180,12 @@ class room{
         myself.inprogress = true;
         sendPacketToAllInRoom('StartGame', myself);
         console.log('Started room: ' + myself.name);
+    }
+
+    destroyRoom(myself){
+        roomIntervalLoop = undefined;
+        roomlist.pop(myself);
+        myself = undefined;
     }
 
 
