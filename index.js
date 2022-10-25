@@ -28,6 +28,11 @@ server.on('message',function(msg,info){
             addUserToRoom(info, cmd.substring(9));
             return;
         }
+        if(cmd.substring(0, 4) == "Host"){
+            console.log(cmd.substring(4))
+            addUserToRoom(info, GenerateRoom())
+            return;
+        }
 
         return;
     }
@@ -99,6 +104,7 @@ function GenerateRoom(){
     NewRoom.name = rName;
     roomlist.push(NewRoom);
     MainLoby.addRoomToLoby(NewRoom);
+    return rName;
 }
 function getUserByInfo(info){
     for(i in activeUsers){
