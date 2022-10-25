@@ -96,11 +96,6 @@ function addUserToLoby(User){
 }
 function RoomLoop(Room){
     sendPacketToAllInRoom("RoomTick", Room);
-    if(!Room.inprogress){
-        if(PowerofTwo(Room.users.length + 1)){
-            Room.startgame();
-        }
-    }
 }
 function GenerateRoom(){
     NewRoom = new room;
