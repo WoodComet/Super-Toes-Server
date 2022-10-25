@@ -64,6 +64,7 @@ function createUser(info, Name = 'Username'){
         newUser.name = Name;
         newUser.address = info.address;
         newUser.port = info.port;
+        newUser.lastHBUTC = Date.now;
         activeUsers.push(newUser);
         console.log("New user created!");
         sendPacket('ACCNT:LogGood', info.port, info.address);
