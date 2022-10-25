@@ -96,7 +96,11 @@ function addUserToLoby(User){
 }
 function GenerateRoom(){
     NewRoom = new room;
-    rName = Titles[Math.floor(Math.random() * 6)];
+    rName = "";
+    while(rName.length < 6){
+        rName += Math.floor(Math.random() * 9);
+    }
+    
     while(getRoomByName(rName) != null){
         rName += ("+");
         console.log("Room Alredy Exists!");
