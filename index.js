@@ -100,8 +100,7 @@ function addUserToLoby(User){
 }
 function RoomLoop(Room){
     sendPacketToAllInRoom("RoomTick", Room);
-    for(i in room.users){
-        player = room.users[i];
+    for(player of Room.users){
         if(Math.floor((Date.now() - player.lastHBUTC) / 1000) > 5) player.leaveRoom();
 
     }
