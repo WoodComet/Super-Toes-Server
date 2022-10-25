@@ -106,7 +106,7 @@ function RoomLoop(Room){
 
     }
     
-    console.log(Room.users.length);
+    console.log(Room.name);
     if(Room.users.length < 1) Room.destroyRoom(Room);
     
 }
