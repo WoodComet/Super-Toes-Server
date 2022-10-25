@@ -1,4 +1,3 @@
-const express = require("express");
 var udp = require('dgram');
 var server = udp.createSocket('udp4');
 
@@ -15,18 +14,18 @@ server.on('message',function(msg,info){
         cmd = msg.substring(4);
         if(cmd.substring(0, 6) == 'Login:'){
             
-            //createUser(info, cmd.substring(6));
+            createUser(info, cmd.substring(6));
             return;
         }
 
         if(cmd.substring(0, 8) == "ExitRoom"){
-            //getUserByInfo(info).leaveRoom();
+            getUserByInfo(info).leaveRoom();
             return;
         }
 
         if(cmd.substring(0, 9) == "JoinRoom:"){
             console.log(cmd.substring(9))
-            //addUserToRoom(info, cmd.substring(9));
+            addUserToRoom(info, cmd.substring(9));
             return;
         }
 
@@ -36,73 +35,151 @@ server.on('message',function(msg,info){
 
 })
 server.bind(2989);
-
-function setup(players = 2){
-
-    PositionsArray = [];
-    
-    for (let i = 0; i < players + 1; i++) {
-        xArray = []
-        for (let ii = 0; ii < players + 1; ii++) {
-            xArray[ii] = ii + i
-        }
-        PositionsArray[i] = xArray;
-    }
-    calcualteMoveResult(PositionsArray);
-    return PositionsArray;
-
-}
-
-function calcualteMoveResult(matrix){
-    matrix2 = rotateMatrix(matrix);
-    //check verticles
-    checkVerticleMatch(matrix);
-    checkVerticleMatch(matrix2);
-
-    //check horizontals
-    checkDiagonalMatch(matrix);
-    checkDiagonalMatch(matrix2);
-}
-
-function checkVerticleMatch(matrix){
-    for (let y = 0; y < matrix.length; y++) {
-        for (let x = 0; x < matrix.length; x++) {
-            // checking the conditions
-            if(matrix[y][x] != 0){
-                if(matrix[y][x] == matrix[y][x + 1] && matrix[y][x + 1] == matrix[y][x + 2]){
-                    console.log("match with" + matrix[y][x]);
-                }
-            }
-        }
-    }
-}
-
-function checkDiagonalMatch(matrix){
-    for (let y = 0; y < matrix.length - 2; y++) {
-        for (let x = 0; x < matrix.length; x++) {
-            // checking the conditions
-            if(matrix[y][x] != 0){
-                if(matrix[y][x] == matrix[y + 1][x + 1] && matrix[y + 1][x + 1] == matrix[y + 2][x + 2]){
-                    console.log("match with" + matrix[y][x]);
-                }
-            }
-        }
-    }
-}
-
-function rotateMatrix(matrix){
-    return matrix[0].map((val, index) => matrix.map(row => row[index]).reverse());
-}
-
-function registerMove(player = 0, coords = [0, 0]){
-    
-    if(!Number.isInteger(player)) return;
-    if(!Number.isInteger(coords[0])) return;
-    if(!Number.isInteger(coords[1])) return;
-    if(PositionsArray[1][0] != 0) return;
-    
-    PositionsArray[1][0] = player; 
-    
-}
-
 console.log(setup(6));
+
+function RunMainLoby(room){
+    sendPacketToAllInRoom("RoomTick", room);
+}
+function sendPacket(what, port, address){
+    server.send(what, port, address);
+    
+}
+function sendPacketToAllInRoom(msg, room){
+    for(i in room.users){
+        player = room.users[i];
+        sendPacket(msg, player.port, player.address);
+    }
+}
+function createUser(info, Name = 'Username'){
+    if(getUserByInfo(info) == null){
+        newUser = new user;
+        newUser.name = Name;
+        newUser.address = info.address;
+        newUser.port = info.port;
+        activeUsers.push(newUser);
+        console.log("New user created!");
+        sendPacket('ACCNT:LogGood', info.port, info.address);
+        addUserToLoby(newUser);
+    }
+    else{
+        //sendPacket('AlredySignedIn!', info.port, info.address);
+        console.log("user existed!");
+    }
+
+}
+function addUserToRoom(info, roomName){
+    User = getUserByInfo(info);
+    Room = getRoomByName(roomName);
+    if(User != null && Room != null){
+        Room.users.push(User);
+        if(User.room != null){
+            User.leaveRoom();
+        }
+        User.room = Room;
+        sendPacket("RMINFO:JoinedRoom:" + roomName, User.port, User.address);
+    }
+}
+function addUserToLoby(User){
+    if(User != null && MainLoby != null){
+        MainLoby.users.push(User);
+        if(User.room != null){
+            User.leaveRoom();
+        }
+        User.room = MainLoby;
+        sendPacket("RMINFO:JoinedTheLoby", User.port, User.address);
+    }
+}
+function GenerateRoom(){
+    NewRoom = new room;
+    rName = Titles[Math.floor(Math.random() * 6)];
+    while(getRoomByName(rName) != null){
+        rName += ("+");
+        console.log("Room Alredy Exists!");
+    }
+    NewRoom.name = rName;
+    roomlist.push(NewRoom);
+    MainLoby.addRoomToLoby(NewRoom);
+}
+function getUserByInfo(info){
+    for(i in activeUsers){
+        User = activeUsers[i];
+        if(User.port == info.port && User.address == info.address){
+            console.log(User.name);
+            return User;
+        }
+    }
+    return null;
+}
+function getRoomByName(name){
+    for(i in roomlist){
+        Room = roomlist[i];
+        if(Room.name == name){
+            console.log("found room: " + Room.name);
+            return Room;
+        }
+    }
+    console.log("unable to find room");
+    return null;
+}
+
+class user{
+    name = 'New User';
+    address = '';
+    port = '';
+    room = null;
+
+    leaveRoom(){
+        this.room.users.pop(this);
+        this.room = null;
+    }
+}
+
+class room{
+    name = 'New Room';
+    map = '';
+    mode = '';
+    users = [];
+    MinimumMembers = 2;
+
+    inprogress = false;
+
+    initalizeRoom(){
+        console.log("room name: " + this.name + " opened")
+        setInterval(RoomLoop, 500, this);
+        //setTimeout(this.startgame, lifetime, this)
+    }
+
+    startgame(myself){
+        myself.inprogress = true;
+        sendPacketToAllInRoom('StartGame', myself);
+        console.log('Started room: ' + myself.name);
+    }
+
+
+}
+
+class loby extends room{
+    lobyRooms = [];
+
+    initalizeRoom(){
+        super.name = 'MainLobby';
+        setInterval(RunMainLoby, 500, this);
+        console.log(this.lobyRooms);
+    }
+
+    startgame(){
+        console.log("Cannot start game in lobby!");
+    }
+
+    addRoomToLoby(myRoom){
+        this.lobyRooms.push(myRoom);
+        myRoom.initalizeRoom();
+        console.log(this.lobyRooms);
+    }
+}
+
+roomlist = [];
+activeUsers = [];
+
+MainLoby = new loby;
+MainLoby.initalizeRoom();
