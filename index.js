@@ -102,9 +102,10 @@ function RoomLoop(Room){
     sendPacketToAllInRoom("RoomTick", Room);
     for(i in room.users){
         player = room.users[i];
-        if(Math.floor((Date.now() - player.lastHBUTC) / 1000) > 5);
-        player.leaveRoom();
+        if(Math.floor((Date.now() - player.lastHBUTC) / 1000) > 5) player.leaveRoom();
+
     }
+    console.log(Room.users);
     if(Room.users.length < 1) Room = undefined;
 }
 function GenerateRoom(creator){
