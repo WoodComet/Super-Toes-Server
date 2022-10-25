@@ -168,7 +168,7 @@ class room{
     mode = '';
     users = [];
     MinimumMembers = 2;
-    roomIntervalLoop;
+    roomIntervalLoop = '';
     inprogress = false;
     initalizeRoom(){
         console.log("room name: " + this.name + " opened")
