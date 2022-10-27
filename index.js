@@ -11,7 +11,7 @@ server.on('message',function(msg,info){
 
         if(msg.substring(0, 10) == 'CMD:Login:'){
             
-            createUser(info, cmd.substring(6));
+            createUser(info, msg.substring(6));
             return;
         }
     }
