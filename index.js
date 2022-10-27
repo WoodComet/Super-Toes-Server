@@ -7,6 +7,14 @@ server.on('message',function(msg,info){
     console.log('Data received from client : ' + msg.toString());
     console.log('Received %d bytes from %s:%d\n',msg.length, info.address, info.port);
 
+    if(!getUserByInfo(info) ?? false){
+
+        if(msg.substring(0, 10) == 'CMD:Login:'){
+            
+            createUser(info, cmd.substring(6));
+            return;
+        }
+    }
     //handel client commands
     if(msg == "HB"){
         getUserByInfo(info)?.lastHBUTC = Date.now();
@@ -14,12 +22,7 @@ server.on('message',function(msg,info){
     else if(msg.substring(0, 4) == 'CMD:'){
 
         cmd = msg.substring(4);
-        if(cmd.substring(0, 6) == 'Login:'){
-            
-            createUser(info, cmd.substring(6));
-            return;
-        }
-
+        
         if(cmd.substring(0, 8) == "ExitRoom"){
             getUserByInfo(info)?.leaveRoom();
             return;
