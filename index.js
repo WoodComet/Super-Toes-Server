@@ -18,6 +18,7 @@ server.on('message',function(msg,info){
     //handel client commands
     if(msg == "HB"){
         getUserByInfo(info).lastHBUTC = Date.now();
+        return;
     }
     else if(msg.substring(0, 4) == 'CMD:'){
 
