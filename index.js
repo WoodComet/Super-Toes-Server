@@ -9,7 +9,7 @@ server.on('message',function(msg,info){
 
     //handel client commands
     if(msg == "HB"){
-        getUserByInfo(info).lastHBUTC = Date.now();
+        getUserByInfo(info)?.lastHBUTC = Date.now();
     }
     else if(msg.substring(0, 4) == 'CMD:'){
 
@@ -21,7 +21,7 @@ server.on('message',function(msg,info){
         }
 
         if(cmd.substring(0, 8) == "ExitRoom"){
-            getUserByInfo(info).leaveRoom();
+            getUserByInfo(info)?.leaveRoom();
             return;
         }
 
