@@ -24,11 +24,28 @@ server.on('message',function(msg,info){
 
         cmd = msg.substring(4);
 
-        if(cmd.substring(0, 8) == "ExitRoom"){
-            getUserByInfo(info).leaveRoom();
-            return;
-        }
+        rm = getUserByInfo(info).room;
 
+        if(rm != MainLoby){
+
+            if(cmd.substring(0, 7) == "GMINFO:"){
+                console.log(cmd.substring(7))
+                if(GameInfo != undefined) GameInfo(cmd.substring(7));
+                return;
+            }
+            if(cmd.substring(0, 6) == "SETGM:"){
+                game = cmd.substring(6);
+                console.log(game)
+                if(game == "TTT"){
+                    sendPacketToAllInRoom("SETGM:TicTacToe", rm)
+                }
+                return;
+            }
+            if(cmd.substring(0, 8) == "ExitRoom"){
+                getUserByInfo(info).leaveRoom();
+                return;
+            }
+        }
         if(cmd.substring(0, 9) == "JoinRoom:"){
             console.log(cmd.substring(9))
             addUserToRoom(info, cmd.substring(9));
