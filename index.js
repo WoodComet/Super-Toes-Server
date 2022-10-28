@@ -37,7 +37,7 @@ server.on('message',function(msg,info){
                 game = cmd.substring(6);
                 console.log(game)
                 if(game == "TTT"){
-                    sendPacketToAllInRoom("SETGM:TicTacToe", rm)
+                    sendPacketToAllInRoom("RMINFO:SETGM:TicTacToe", rm)
                 }
                 return;
             }
