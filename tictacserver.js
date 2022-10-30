@@ -69,6 +69,7 @@ global.registerMove = function(player = 0, coords = [0, 0]){
 global.TicTacToeGame = class {
     myRoom;
     onRoomInfo(user, msg){
+        console.log("recived room info: " + msg);
         if(myRoom.host = user){
             if(msg == "StartRound") startRound();
         }
