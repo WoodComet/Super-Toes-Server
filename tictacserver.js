@@ -70,8 +70,8 @@ global.TicTacToeGame = class {
     myRoom;
     
     constructor(){
-        console.log("binding this")
-        this.onRoomInfo.bind(this);
+        console.log("binding this");
+        this.onRoomInfo = this.onRoomInfo.bind(this);
     }
 
     onRoomInfo(user, msg){
