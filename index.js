@@ -127,9 +127,7 @@ function addUserToLoby(User){
 function RoomLoop(Room){
     sendPacketToAllInRoom("RoomTick", Room);
     for(player of Room.users){
-        console.log(Date.now() - player.lastHBUTC);
         if(Math.floor((Date.now() - player.lastHBUTC) / 1000) > 5) player.leaveRoom();
-
     }
     
     if(Room.users.length < 1) Room.destroyRoom(Room);
