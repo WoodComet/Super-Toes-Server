@@ -65,3 +65,19 @@ global.registerMove = function(player = 0, coords = [0, 0]){
     PositionsArray[1][0] = player; 
     
 }
+
+global.TicTacToeGame = class {
+    myRoom;
+    onRoomInfo(user, msg){
+        if(myRoom.host = user){
+            if(msg == "StartRound") startRound();
+        }
+    }
+
+    startRound(){
+        sendPacketToAllInRoom("RMINFO:Begin", this.myRoom);
+    }
+
+
+
+}

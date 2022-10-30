@@ -1,4 +1,5 @@
 var udp = require('dgram');
+const { rm } = require('fs');
 var server = udp.createSocket('udp4');
 require("./tictacserver");
 server.on('message',function(msg,info){
@@ -37,7 +38,10 @@ server.on('message',function(msg,info){
                 game = cmd.substring(6);
                 console.log(game)
                 if(game == "TTT"){
-                    sendPacketToAllInRoom("RMINFO:SETGM:TicTacToe", rm)
+                    sendPacketToAllInRoom("RMINFO:SETGM:TicTacToe", rm);
+                    rm.myGame = new TicTacToeGame;
+                    rm.myGame.myRoom = rm;
+                    GameInfo = rm.myGame.onRoomInfo;
                 }
                 return;
             }
@@ -101,12 +105,18 @@ function addUserToRoom(info, roomName){
     User = getUserByInfo(info);
     Room = getRoomByName(roomName);
     if(User != null && Room != null){
-        Room.users.push(User);
-        if(User.room != null){
-            User.leaveRoom();
+        if(!Room.inprogress){
+            Room.users.push(User);
+            if(User.room != null){
+                User.leaveRoom();
+            }
+            User.room = Room;
+            sendPacket("RMINFO:JoinedRoom:" + roomName, User.port, User.address);
         }
-        User.room = Room;
-        sendPacket("RMINFO:JoinedRoom:" + roomName, User.port, User.address);
+        else{
+            sendPacket("RMINFO:UnableToJoinRoom:" + roomName, User.port, User.address);
+        }
+
     }
 }
 function addUserToLoby(User){
@@ -129,7 +139,10 @@ function RoomLoop(Room){
     
     console.log("looping room: " + Room.name);
     if(Room.users.length < 1) Room.destroyRoom(Room);
-    
+    if(!Room.host){
+        console.log("selectingNewHost");
+        Room.host = Room.users[0];
+    }
 }
 function GenerateRoom(creator){
     NewRoom = new room;
@@ -185,12 +198,12 @@ class user{
 
 class room{
     name = 'New Room';
-    map = '';
-    mode = '';
     users = [];
     MinimumMembers = 2;
     roomIntervalLoop = '';
     inprogress = false;
+    myGame;
+    host;
     initalizeRoom(){
         console.log("room name: " + this.name + " opened")
         this.roomIntervalLoop = setInterval(RoomLoop, 500, this);
