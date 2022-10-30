@@ -4,8 +4,8 @@ var server = udp.createSocket('udp4');
 require("./tictacserver");
 server.on('message',function(msg,info){
     msg = msg.toString();
-
-    if(getUserByInfo(info) == undefined){
+    sender = getUserByInfo(info);
+    if(sender == undefined){
 
         if(msg.substring(0, 10) == 'CMD:Login:'){
             
@@ -16,20 +16,20 @@ server.on('message',function(msg,info){
     }
     //handel client commands
     if(msg == "HB"){
-        getUserByInfo(info).lastHBUTC = Date.now();
+        sender.lastHBUTC = Date.now();
         return;
     }
     else if(msg.substring(0, 4) == 'CMD:'){
 
         cmd = msg.substring(4);
 
-        rm = getUserByInfo(info).room;
+        rm = sender.room;
 
         if(rm != MainLoby){
 
             if(cmd.substring(0, 7) == "GMINFO:"){
 
-                if(GameInfo != undefined) GameInfo(cmd.substring(7));
+                if(GameInfo != undefined) GameInfo(sender, cmd.substring(7));
                 return;
             }
             if(cmd.substring(0, 6) == "SETGM:"){
@@ -43,7 +43,7 @@ server.on('message',function(msg,info){
                 return;
             }
             if(cmd.substring(0, 8) == "ExitRoom"){
-                getUserByInfo(info).leaveRoom();
+                sender.leaveRoom();
                 return;
             }
         }
