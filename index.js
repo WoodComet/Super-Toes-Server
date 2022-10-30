@@ -35,7 +35,7 @@ server.on('message',function(msg,info){
             if(cmd.substring(0, 6) == "SETGM:"){
                 game = cmd.substring(6);
                 if(game == "TTT"){
-                    sendPacketToAllInRoom("RMINFO:SETGM:TicTacToe", rm);
+                    rm.sendPacketToAllInRoom("RMINFO:SETGM:TicTacToe");
                     rm.myGame = new TicTacToeGame;
                     rm.myGame.myRoom = rm;
                     GameInfo = rm.myGame.onRoomInfo;
@@ -66,21 +66,16 @@ server.bind(2989);
 
 
 function RunMainLoby(room){
-    sendPacketToAllInRoom("RoomTick", room);
+    room.sendPacketToAllInRoom("RoomTick");
 }
 function sendPacket(what, port, address){
     server.send(what, port, address);
     
 }
-function sendPacketToAllInRoom(msg, room){
-    for(i in room.users){
-        player = room.users[i];
-        sendPacket(msg, player.port, player.address);
-    }
-}
+
 function createUser(info, Name = 'Username'){
     if(getUserByInfo(info) == null){
-        newUser = new user;
+        var newUser = new user;
         newUser.name = Name;
         newUser.address = info.address;
         newUser.port = info.port;
@@ -97,8 +92,8 @@ function createUser(info, Name = 'Username'){
 
 }
 function addUserToRoom(info, roomName){
-    User = getUserByInfo(info);
-    Room = getRoomByName(roomName);
+    var User = getUserByInfo(info);
+    var Room = getRoomByName(roomName);
     if(User != null && Room != null){
         if(!Room.inprogress){
             Room.users.push(User);
@@ -125,8 +120,8 @@ function addUserToLoby(User){
     }
 }
 function RoomLoop(Room){
-    sendPacketToAllInRoom("RoomTick", Room);
-    for(player of Room.users){
+    Room.sendPacketToAllInRoom("RoomTick");
+    for(var player of Room.users){
         if(Math.floor((Date.now() - player.lastHBUTC) / 1000) > 5) player.leaveRoom();
     }
     
@@ -137,8 +132,8 @@ function RoomLoop(Room){
     }
 }
 function GenerateRoom(creator){
-    NewRoom = new room;
-    rName = "";
+    var NewRoom = new room;
+    var rName = "";
     while(rName.length < 6){
         rName += Math.floor(Math.random() * 9);
     }
@@ -155,7 +150,7 @@ function GenerateRoom(creator){
 }
 function getUserByInfo(info){
     for(i in activeUsers){
-        User = activeUsers[i];
+        var User = activeUsers[i];
         if(User.port == info.port && User.address == info.address){
             return User;
         }
@@ -164,7 +159,7 @@ function getUserByInfo(info){
 }
 function getRoomByName(name){
     for(i in roomlist){
-        Room = roomlist[i];
+        var Room = roomlist[i];
         if(Room.name == name){
             console.log("found room: " + Room.name);
             return Room;
@@ -203,7 +198,7 @@ class room{
 
     startgame(myself){
         myself.inprogress = true;
-        sendPacketToAllInRoom('StartGame', myself);
+        this.sendPacketToAllInRoom('StartGame');
         console.log('Started room: ' + myself.name);
     }
 
@@ -211,6 +206,13 @@ class room{
         clearInterval(this.roomIntervalLoop);
         roomlist.splice(roomlist.indexOf(myself), 1);
         myself = undefined;
+    }
+
+    sendPacketToAllInRoom(msg){
+        for(var i in this.users){
+            var player = this.users[i];
+            sendPacket(msg, player.port, player.address);
+        }
     }
 
 
