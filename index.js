@@ -5,9 +5,6 @@ require("./tictacserver");
 server.on('message',function(msg,info){
     msg = msg.toString();
 
-    console.log('Data received from client : ' + msg.toString());
-    console.log('Received %d bytes from %s:%d\n',msg.length, info.address, info.port);
-
     if(getUserByInfo(info) == undefined){
 
         if(msg.substring(0, 10) == 'CMD:Login:'){
@@ -31,7 +28,7 @@ server.on('message',function(msg,info){
         if(rm != MainLoby){
 
             if(cmd.substring(0, 7) == "GMINFO:"){
-                console.log(cmd.substring(7))
+
                 if(GameInfo != undefined) GameInfo(cmd.substring(7));
                 return;
             }
