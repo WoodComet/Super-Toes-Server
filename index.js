@@ -1,5 +1,5 @@
 var udp = require('dgram');
-const { rm } = require('fs');
+const { fs } = require('fs');
 var server = udp.createSocket('udp4');
 require("./tictacserver");
 server.on('message',function(msg,info){
