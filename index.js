@@ -34,7 +34,6 @@ server.on('message',function(msg,info){
             }
             if(cmd.substring(0, 6) == "SETGM:"){
                 game = cmd.substring(6);
-                console.log(game)
                 if(game == "TTT"){
                     sendPacketToAllInRoom("RMINFO:SETGM:TicTacToe", rm);
                     rm.myGame = new TicTacToeGame;
@@ -49,12 +48,10 @@ server.on('message',function(msg,info){
             }
         }
         if(cmd.substring(0, 9) == "JoinRoom:"){
-            console.log(cmd.substring(9))
             addUserToRoom(info, cmd.substring(9));
             return;
         }
         if(cmd.substring(0, 4) == "Host"){
-            console.log(cmd.substring(4))
             GenerateRoom(info);
             
             return;
@@ -66,7 +63,7 @@ server.on('message',function(msg,info){
 
 })
 server.bind(2989);
-console.log(setup(6));
+
 
 function RunMainLoby(room){
     sendPacketToAllInRoom("RoomTick", room);
@@ -135,10 +132,9 @@ function RoomLoop(Room){
 
     }
     
-    console.log("looping room: " + Room.name);
     if(Room.users.length < 1) Room.destroyRoom(Room);
     if(!Room.host){
-        console.log("selectingNewHost");
+        console.log("selecting new host in: " + Room.name);
         Room.host = Room.users[0];
     }
 }
@@ -163,7 +159,6 @@ function getUserByInfo(info){
     for(i in activeUsers){
         User = activeUsers[i];
         if(User.port == info.port && User.address == info.address){
-            console.log(User.name);
             return User;
         }
     }
