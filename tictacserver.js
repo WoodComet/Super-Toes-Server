@@ -77,7 +77,7 @@ global.TicTacToeGame = class {
     onRoomInfo(user, msg){
         console.log("recived room info: " + msg);
         if(this.myRoom.host = user){
-            if(msg == "StartRound") startRound();
+            if(msg == "StartRound") this.startRound();
         }
     }
     
