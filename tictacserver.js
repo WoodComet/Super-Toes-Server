@@ -77,7 +77,6 @@ global.TicTacToeGame = class {
             }
             this.PositionsArray[i] = xArray;
         }
-        return PositionsArray;
     
     }
 
