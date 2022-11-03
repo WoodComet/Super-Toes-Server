@@ -81,7 +81,7 @@ global.TicTacToeGame = class {
     }
 
     registerMove(player = 0, coords = [0, 0]){
-    
+        console.log("user" + player + " claimed tile: " + coords);
         if(!Number.isInteger(player)) return;
         if(!Number.isInteger(coords[0])) return;
         if(!Number.isInteger(coords[1])) return;
@@ -89,7 +89,7 @@ global.TicTacToeGame = class {
         
         this.PositionsArray[1][0] = player; 
         this.myRoom.sendPacketToAllInRoom("RMINFO:CLM:" + player + ":" + coords[0] + "," + coords[1], this.myRoom);
-        console.log("user" + player + " claimed tile: " + coords);
+        
     }
 
 
