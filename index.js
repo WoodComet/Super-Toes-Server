@@ -180,6 +180,10 @@ class user{
         this.room.users.splice(this.room.users.indexOf(this), 1);
         this.room = null;
     }
+
+    getPositionInRoom(){
+        return this.room.users.indexOf(this);
+    }
 }
 
 class room{
@@ -213,6 +217,10 @@ class room{
             var player = this.users[i];
             sendPacket(msg, player.port, player.address);
         }
+    }
+
+    getUserPositionInRoom(user){
+        return this.users.indexOf(user);
     }
 
 
