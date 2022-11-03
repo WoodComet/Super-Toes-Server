@@ -57,7 +57,7 @@ global.TicTacToeGame = class {
         if(this.myRoom.host = user){
             if(msg == "StartRound") this.startRound();
         }
-        if(msg.substring(0, 6) == "CLMTL:") this.registerMove(user.getPositionInRoom(), msg.substring(6).split(":"));
+        if(msg.substring(0, 6) == "CLMTL:") this.registerMove(user.getPositionInRoom(), msg.substring(6).split(","));
     }
     
 
@@ -88,7 +88,7 @@ global.TicTacToeGame = class {
         if(this.PositionsArray[coords[1]][coords[0]] != 0) return;
         
         this.PositionsArray[1][0] = player; 
-        this.myRoom.sendPacketToAllInRoom("RMINFO:CLM:" + player + ":" + coords[0] + ":" + coords[1], this.myRoom);
+        this.myRoom.sendPacketToAllInRoom("RMINFO:CLM:" + player + ":" + coords[0] + "," + coords[1], this.myRoom);
         console.log("user" + player + " claimed tile: " + coords);
     }
 
