@@ -213,7 +213,6 @@ class room{
     }
 
     sendPacketToAllInRoom(msg){
-        console.log("Sending " + msg + "to everyone in the room");
         for(var i in this.users){
             var player = this.users[i];
             sendPacket(msg, player.port, player.address);
