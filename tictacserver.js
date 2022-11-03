@@ -63,7 +63,7 @@ global.TicTacToeGame = class {
 
     startRound(){
         this.myRoom.sendPacketToAllInRoom("RMINFO:Begin", this.myRoom);
-        this.setup(this.myRoom.users.length());
+        this.setup(this.myRoom.users.length);
     }
 
     setup(players = 2){
