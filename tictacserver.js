@@ -46,7 +46,7 @@ global.rotateMatrix = function(matrix){
 global.TicTacToeGame = class {
     myRoom;
     PositionsArray;
-
+    boardSize = 9;
     constructor(){
         console.log("binding this");
         this.onRoomInfo = this.onRoomInfo.bind(this);
@@ -63,7 +63,7 @@ global.TicTacToeGame = class {
 
     startRound(){
         this.myRoom.sendPacketToAllInRoom("RMINFO:Begin", this.myRoom);
-        this.setup(this.myRoom.users.length);
+        this.setup(boardSize);
     }
 
     setup(players = 2){
@@ -88,7 +88,6 @@ global.TicTacToeGame = class {
         console.log("user" + player + " claimed tile: " + coords[0] + ":" + coords[1]);
         if(!Number.isInteger(parseInt(coords[1]))) return;
         console.log("user" + player + " claimed tile: " + coords[0] + ":" + coords[1]);
-        if(this.PositionsArray[0] == undefined) return;
         if(this.PositionsArray[coords[1]][coords[0]] != 0) return;
         
         this.PositionsArray[1][0] = player; 
