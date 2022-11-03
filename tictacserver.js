@@ -83,7 +83,9 @@ global.TicTacToeGame = class {
     registerMove(player = 0, coords = [0, 0]){
         
         if(!Number.isInteger(player)) return;
+        console.log("user" + player + " claimed tile: " + coords[0] + ":" + coords[1]);
         if(!Number.isInteger(coords[0])) return;
+        console.log("user" + player + " claimed tile: " + coords[0] + ":" + coords[1]);
         if(!Number.isInteger(coords[1])) return;
         console.log("user" + player + " claimed tile: " + coords[0] + ":" + coords[1]);
         if(this.PositionsArray[coords[1]][coords[0]] != 0) return;
