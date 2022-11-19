@@ -58,7 +58,7 @@ global.TicTacToeGame = class {
         if(this.myRoom.host = user){
             if(msg == "StartRound") this.startRound();
         }
-        if(msg.substring(0, 4) == "CLM:") this.registerMove(user.getPositionInRoom(), msg.substring(4).split(","));
+        if(msg.substring(0, 4) == "CLM:") this.registerMove(user.getPositionInRoom() + 1, msg.substring(4).split(","));
     }
     
 
