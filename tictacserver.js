@@ -86,14 +86,12 @@ global.TicTacToeGame = class {
         if(!Number.isInteger(player)) return;
         if(!Number.isInteger(parseInt(coords[0]))) return;
         if(!Number.isInteger(parseInt(coords[1]))) return;
-        console.log("current value is" + this.PositionsArray[coords[1]][coords[0]])
+        console.log("current value is" + this.PositionsArray[coords[1]][coords[0]] + "!")
         if(this.PositionsArray[coords[1]][coords[0]] != 0) return;
         if(this.currentPlayer != player) return;
         
         this.PositionsArray[1][0] = player; 
         this.myRoom.sendPacketToAllInRoom("RMINFO:CLM:" + player + ":" + coords[0] + ":" + coords[1]);
-        console.log(this.myRoom);
-        console.log("user" + player + " claimed tile: " + coords[0] + ":" + coords[1]);
         this.nextPlayer(player);
     }
 
@@ -101,10 +99,8 @@ global.TicTacToeGame = class {
         player += 1;
         if(player > this.myRoom.users.length){
             player -= this.myRoom.users.length;
-        }
-        
+        }      
         this.currentPlayer = player;
-        console.log("It is player " + player + " 's turn");
     }
 
 
