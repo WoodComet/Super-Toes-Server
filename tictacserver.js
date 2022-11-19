@@ -64,7 +64,7 @@ global.TicTacToeGame = class {
         if(msg.substring(0, 4) == "CLM:") this.registerMove(user.getPositionInRoom() + 1, msg.substring(4).split(","));
         if(msg.substring(0, 7) == "BRDSIZE"){
             this.boardSize = this.myRoom.users.length;
-            sendPacket("RMINFO:BRDSIZE:" + this.boardSize, user.port, user.address);
+            sendPacketToAllInRoom("RMINFO:BRDSIZE:" + this.myRoom);
         } 
     }
     
