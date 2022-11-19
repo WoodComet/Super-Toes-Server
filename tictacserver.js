@@ -3,12 +3,14 @@
 global.calcualteMoveResult = function(matrix){
     let matrix2 = rotateMatrix(matrix);
     //check verticles
-    checkVerticleMatch(matrix);
-    checkVerticleMatch(matrix2);
+    if(checkVerticleMatch(matrix) || checkVerticleMatch(matrix2)) return true;
+
 
     //check horizontals
-    checkDiagonalMatch(matrix);
-    checkDiagonalMatch(matrix2);
+    if(checkDiagonalMatch(matrix) || checkDiagonalMatch(matrix2)) return true; 
+
+    return false;
+    
 }
 
 global.checkVerticleMatch = function(matrix){
@@ -17,11 +19,12 @@ global.checkVerticleMatch = function(matrix){
             // checking the conditions
             if(matrix[y][x] != 0){
                 if(matrix[y][x] == matrix[y][x + 1] && matrix[y][x + 1] == matrix[y][x + 2]){
-                    console.log("match with" + matrix[y][x]);
+                    return true;
                 }
             }
         }
     }
+    return false;
 }
 
 global.checkDiagonalMatch = function(matrix){
@@ -30,7 +33,7 @@ global.checkDiagonalMatch = function(matrix){
             // checking the conditions
             if(matrix[y][x] != 0){
                 if(matrix[y][x] == matrix[y + 1][x + 1] && matrix[y + 1][x + 1] == matrix[y + 2][x + 2]){
-                    console.log("match with" + matrix[y][x]);
+                    return matrix[y][x];
                 }
             }
         }
@@ -91,7 +94,15 @@ global.TicTacToeGame = class {
         
         this.PositionsArray[coords[1]][coords[0]] = player; 
         this.myRoom.sendPacketToAllInRoom("RMINFO:CLM:" + player + ":" + coords[0] + ":" + coords[1]);
-        this.nextPlayer(player);
+
+        if(calcualteMoveResult(this.PositionsArray)){
+            this.myRoom.sendPacketToAllInRoom("RMINFO:WNR:" + player);
+            this.currentPlayer = 0;
+        }
+        else{
+            this.nextPlayer(player);
+        }
+        
     }
 
     nextPlayer(player = 0){
@@ -100,6 +111,7 @@ global.TicTacToeGame = class {
             player -= this.myRoom.users.length;
         }      
         this.currentPlayer = player;
+        this.myRoom.sendPacketToAllInRoom("RMINFO:NXTTRN:" + player);
     }
 
 
