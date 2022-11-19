@@ -98,11 +98,12 @@ global.TicTacToeGame = class {
     }
 
     nextPlayer(player = 0){
+        player += 1;
         if(player > this.myRoom.users.length){
             player -= this.myRoom.users.length;
         }
         
-        this.currentPlayer = player + 1;
+        this.currentPlayer = player;
         console.log("It is player " + player + " 's turn");
     }
 
