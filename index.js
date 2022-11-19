@@ -96,6 +96,7 @@ function addUserToRoom(info, roomName){
     var User = getUserByInfo(info);
     var Room = getRoomByName(roomName);
     if(User != null && Room != null){
+        console.log(Room.inprogress);
         if(Room.inprogress == false){
             Room.users.push(User);
             if(User.room != null){
