@@ -164,7 +164,7 @@ function getRoomByName(name){
     for(i in roomlist){
         var Room = roomlist[i];
         console.log(Room.name + "is a room" + name + "?");
-        if(Room.name === name){
+        if(Room.name == name){
             console.log("found room: " + Room.name);
             return Room;
         }
