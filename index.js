@@ -48,6 +48,7 @@ server.on('message',function(msg,info){
             }
         }
         if(cmd.substring(0, 9) == "JoinRoom:"){
+            console.log("Adding user to room!")
             addUserToRoom(info, cmd.substring(9));
             return;
         }
