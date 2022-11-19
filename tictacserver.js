@@ -86,7 +86,7 @@ global.TicTacToeGame = class {
         if(!Number.isInteger(player)) return;
         if(!Number.isInteger(parseInt(coords[0]))) return;
         if(!Number.isInteger(parseInt(coords[1]))) return;
-        console.log("current value is" + this.PositionsArray[coords[1]][coords[0]] + "!")
+        console.log("current value is" + this.PositionsArray[coords[1]][coords[0]] + "!, player: " + player);
         if(this.PositionsArray[coords[1]][coords[0]] != 0) return;
         if(this.currentPlayer != player) return;
         
