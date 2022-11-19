@@ -68,7 +68,7 @@ global.TicTacToeGame = class {
     startRound(){
         for(var i in this.myRoom.users){
             var player = this.myRoom.users[i];
-            sendPacket("URTURN:" + (parseInt(i) + 1), player.port, player.address);
+            sendPacket("RMINFO:URTURN:" + (parseInt(i) + 1), player.port, player.address);
         }
         this.myRoom.sendPacketToAllInRoom("RMINFO:Begin", this.myRoom);
         this.setup(this.boardSize);
