@@ -47,7 +47,7 @@ global.TicTacToeGame = class {
     myRoom;
     PositionsArray;
     boardSize = 9;
-    currentPlayer = 0;
+    currentPlayer = 1;
     constructor(){
         console.log("binding this");
         this.onRoomInfo = this.onRoomInfo.bind(this);
