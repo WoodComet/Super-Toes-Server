@@ -94,7 +94,7 @@ global.TicTacToeGame = class {
         this.myRoom.sendPacketToAllInRoom("RMINFO:CLM:" + player + ":" + coords[0] + ":" + coords[1]);
         console.log(this.myRoom);
         console.log("user" + player + " claimed tile: " + coords[0] + ":" + coords[1]);
-        nextPlayer(player);
+        this.nextPlayer(player);
     }
 
     nextPlayer(player = 0){
