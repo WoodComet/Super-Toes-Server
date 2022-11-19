@@ -88,7 +88,7 @@ global.TicTacToeGame = class {
         if(this.PositionsArray[coords[1]][coords[0]] != 0) return;
         
         this.PositionsArray[1][0] = player; 
-        this.myRoom.sendPacketToAllInRoom("RMINFO:CLM:" + player + ":" + coords[0] + "," + coords[1]);
+        this.myRoom.sendPacketToAllInRoom("RMINFO:CLM:" + player + ":" + coords[0] + ":" + coords[1]);
         console.log(this.myRoom);
         console.log("user" + player + " claimed tile: " + coords[0] + ":" + coords[1]);
     }
