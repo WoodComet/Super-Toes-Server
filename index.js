@@ -3,7 +3,7 @@ const { fs } = require('fs');
 var server = udp.createSocket('udp4');
 require("./tictacserver");
 server.on('message',function(msg,info){
-    msg = msg.toString();
+    msg = msg.toString().replace(/[^ -~]+/g, "");;
     sender = getUserByInfo(info);
     if(sender == undefined){
 
