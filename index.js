@@ -69,7 +69,7 @@ server.bind(2989);
 function RunMainLoby(room){
     room.sendPacketToAllInRoom("RoomTick");
 }
-function sendPacket(what, port, address){
+global.sendPacket = function(what, port, address){
     server.send(what, port, address);
     
 }
